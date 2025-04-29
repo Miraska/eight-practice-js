@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Улучшенное выпадающее меню и аккордеон</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: #222;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .dropdown button {
+            background-color: #4a6bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .dropdown button:hover {
+            background-color: #3a5bef;
+        }
+
+        .dropdown button:active {
+            transform: scale(0.98);
+        }
+
+        .dropdown-content {
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 6px;
+            z-index: 100;
+            overflow: hidden;
+            margin-top: 8px;
+            opacity: 0;
+            transform: translateY(-10px);
+            visibility: hidden;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+        }
+
+        .dropdown-content.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8f8f8;
+            color: #4a6bff;
+        }
+
+        h2 {
+            margin: 30px 0 15px;
+            color: #333;
+        }
+
+        .accordion {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .accordion-button {
+            background-color: #f9f9f9;
+            cursor: pointer;
+            padding: 16px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .accordion-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .accordion-button::after {
+            content: '+';
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .accordion-button.active {
+            background-color: #f0f0f0;
+        }
+
+        .accordion-button.active::after {
+            content: '-';
+        }
+
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: white;
+        }
+
+        .accordion-content.show {
+            padding: 16px 20px;
+            max-height: 500px;
+            border-top: 1px solid #eee;
+        }
+
+        .accordion-content p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dropdown">
+        <button onclick="toggleDropdown()">Выпадающее меню</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#">Ссылка 1</a>
+            <a href="#">Ссылка 2</a>
+            <a href="#">Ссылка 3</a>
+        </div>
+    </div>
+
+    <h2>Аккордеон</h2>
+    <div class="accordion">
+        <button class="accordion-button" onclick="toggleAccordion(this)">1 раздел</button>
+        <div class="accordion-content">
+            <p>Содержимое 1 раздела. Здесь может быть любой текст или другие HTML-элементы.</p>
+        </div>
+    </div>
+    <div class="accordion">
+        <button class="accordion-button" onclick="toggleAccordion(this)">2 раздел</button>
+        <div class="accordion-content">
+            <p>Содержимое 2 раздела. Аккордеон теперь имеет плавную анимацию при открытии и закрытии.</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].classList.remove('show');
+                }
+            }
+        });
+
+        function toggleAccordion(button) {
+            button.classList.toggle('active');
+            var content = button.nextElementSibling;
+            content.classList.toggle('show');
+            
+            const allButtons = document.querySelectorAll('.accordion-button');
+            allButtons.forEach(otherButton => {
+                if (otherButton !== button) {
+                    otherButton.classList.remove('active');
+                    otherButton.nextElementSibling.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
